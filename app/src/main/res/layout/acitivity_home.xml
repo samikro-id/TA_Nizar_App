@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,16 +16,16 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/civProfile"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
-                android:src="@drawable/ic_baseline_account_circle_24"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/profil"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 app:civ_border_width="2dp"
                 app:civ_border_color="#FFFFFFFF"
@@ -36,7 +37,7 @@
                 android:id="@+id/tvNama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="M Nizar Y.P"
+                android:text="M Nizar Yudi Prasetiyo"
                 android:textSize="20dp"
                 android:layout_marginLeft="20dp"
                 app:layout_constraintLeft_toRightOf="@id/civProfile"
@@ -46,35 +47,40 @@
                 android:id="@+id/tvJudul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tittle"
+                android:text="Lampu Otomatis Gedung"
                 android:textSize="20dp"
                 android:layout_marginLeft="20dp"
                 app:layout_constraintLeft_toRightOf="@id/civProfile"
                 app:layout_constraintBottom_toBottomOf="@id/civProfile"/>
 
-            <ImageView
-                android:id="@+id/ivOption"
-                android:layout_width="54dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_baseline_more_vert_24"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="10dp"
-                android:onClick="openOption"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <ImageView
-                android:id="@+id/ivTimer"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_baseline_timer_24"
-                android:onClick="openSchedule"
-                app:layout_constraintRight_toLeftOf="@id/ivOption"
-                app:layout_constraintTop_toTopOf="@id/ivOption"
-                app:layout_constraintBottom_toBottomOf="@id/ivOption" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingBottom="30dp"
+        android:clipToPadding="false"
+        android:id="@+id/rvButton"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="vertical"
+        android:orientation="vertical"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_button"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabVoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:onClick="getSpeechInput"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_keyboard_voice_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
