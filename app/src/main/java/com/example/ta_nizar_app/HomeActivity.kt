@@ -135,19 +135,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun getSpeechInput(view: View){
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale("in_ID"))
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, Locale("in_ID"))
-        intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, Locale("in_ID"))
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, Locale("Bicara sekarang"))
-
-        if(intent.resolveActivity(packageManager) != null){
-            startActivityForResult(intent, 10)
-        }
-        else{
-            Toast.makeText(this, "Your Device Doesn't Support Speech Input", Toast.LENGTH_SHORT).show()
-        }
+        val mSpeechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        mSpeechIntent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, packageName)
+        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
+        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true)
+        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "id-ID")
+        mSpeechIntent.putExtra(
+            RecognizerIntent.EXTRA_PROMPT,
+            "Silahkan ucapkan perintah Anda..."
+        )
+        startActivityForResult(mSpeechIntent, 10)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
