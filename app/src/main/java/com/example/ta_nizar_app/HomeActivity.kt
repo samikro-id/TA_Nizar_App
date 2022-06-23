@@ -33,6 +33,7 @@ import com.example.ta_nizar_app.home.HomeModel
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
+import kotlin.system.exitProcess
 
 class HomeActivity : AppCompatActivity() {
     val myUUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
@@ -131,7 +132,76 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun parseSpeech(string:String){
-
+        if( (string == "nyalakan lampu 1") or
+            (string == "nyalakan lampu satu")){
+            control("ON", 1)
+        }
+        else if( (string == "matikan lampu 1") or
+            (string == "matikan lampu satu")){
+            control("OFF", 1)
+        }
+        if( (string == "nyalakan lampu 2") or
+            (string == "nyalakan lampu dua")){
+            control("ON", 2)
+        }
+        else if( (string == "matikan lampu 2") or
+            (string == "matikan lampu dua")){
+            control("OFF", 2)
+        }
+        if( (string == "nyalakan lampu 3") or
+            (string == "nyalakan lampu tiga")){
+            control("ON", 3)
+        }
+        else if( (string == "matikan lampu 3") or
+            (string == "matikan lampu tiga")){
+            control("OFF", 3)
+        }
+        if( (string == "nyalakan lampu 4") or
+            (string == "nyalakan lampu empat")){
+            control("ON", 4)
+        }
+        else if( (string == "matikan lampu 4") or
+            (string == "matikan lampu empat")){
+            control("OFF", 4)
+        }
+        if( (string == "nyalakan lampu 5") or
+            (string == "nyalakan lampu lima")){
+            control("ON", 5)
+        }
+        else if( (string == "matikan lampu 5") or
+            (string == "matikan lampu lima")){
+            control("OFF", 5)
+        }
+        if( (string == "nyalakan lampu 6") or
+            (string == "nyalakan lampu enam")){
+            control("ON", 6)
+        }
+        else if( (string == "matikan lampu 6") or
+            (string == "matikan lampu enam")){
+            control("OFF", 6)
+        }
+        if( (string == "nyalakan lampu 7") or
+            (string == "nyalakan lampu tujuh")){
+            control("ON", 7)
+        }
+        else if( (string == "matikan lampu 7") or
+            (string == "matikan lampu tujuh")){
+            control("OFF", 7)
+        }
+        if( (string == "nyalakan lampu 8") or
+            (string == "nyalakan lampu delapan")){
+            control("ON", 8)
+        }
+        else if( (string == "matikan lampu 8") or
+            (string == "matikan lampu delapan")){
+            control("OFF", 8)
+        }
+        if(string == "nyalakan semua lampu"){
+            control("ON", 0)
+        }
+        else if(string == "matikan semua lampu"){
+            control("OFF", 0)
+        }
     }
 
     fun getSpeechInput(view: View){
@@ -159,7 +229,7 @@ class HomeActivity : AppCompatActivity() {
                     val spokenText: String? =  data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).let { text -> text?.get(0) }
                     Toast.makeText(this, "you said ${spokenText}", Toast.LENGTH_SHORT).show()
 
-
+                    parseSpeech(spokenText!!);
                 }
         }
 
@@ -224,7 +294,13 @@ class HomeActivity : AppCompatActivity() {
 
     @Throws(Exception::class)
     fun write(s: String) {
-        _outStream?.write(s.toByteArray())
+        if(btSocket?.isConnected == true){
+            _outStream?.write(s.toByteArray())
+        }
+        else{
+            Toast.makeText(this, "Bluetooth Disconnected !!", Toast.LENGTH_SHORT).show()
+            appExit()
+        }
     }
 
     private fun checkBluetooth(){
