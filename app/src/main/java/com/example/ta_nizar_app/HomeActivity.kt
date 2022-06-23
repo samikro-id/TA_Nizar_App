@@ -131,76 +131,78 @@ class HomeActivity : AppCompatActivity() {
         mAdapter.notifyDataSetChanged()
     }
 
-    fun parseSpeech(string:String){
+    fun parseSpeech(cmd:String){
+        var string = cmd.lowercase()
+
         if( (string == "nyalakan lampu 1") or
             (string == "nyalakan lampu satu")){
-            control("ON", 1)
+            control("OFF", 1)
         }
         else if( (string == "matikan lampu 1") or
             (string == "matikan lampu satu")){
-            control("OFF", 1)
+            control("ON", 1)
         }
         if( (string == "nyalakan lampu 2") or
             (string == "nyalakan lampu dua")){
-            control("ON", 2)
+            control("OFF", 2)
         }
         else if( (string == "matikan lampu 2") or
             (string == "matikan lampu dua")){
-            control("OFF", 2)
+            control("ON", 2)
         }
         if( (string == "nyalakan lampu 3") or
             (string == "nyalakan lampu tiga")){
-            control("ON", 3)
+            control("OFF", 3)
         }
         else if( (string == "matikan lampu 3") or
             (string == "matikan lampu tiga")){
-            control("OFF", 3)
+            control("ON", 3)
         }
         if( (string == "nyalakan lampu 4") or
             (string == "nyalakan lampu empat")){
-            control("ON", 4)
+            control("OFF", 4)
         }
         else if( (string == "matikan lampu 4") or
             (string == "matikan lampu empat")){
-            control("OFF", 4)
+            control("ON", 4)
         }
         if( (string == "nyalakan lampu 5") or
             (string == "nyalakan lampu lima")){
-            control("ON", 5)
+            control("OFF", 5)
         }
         else if( (string == "matikan lampu 5") or
             (string == "matikan lampu lima")){
-            control("OFF", 5)
+            control("ON", 5)
         }
         if( (string == "nyalakan lampu 6") or
             (string == "nyalakan lampu enam")){
-            control("ON", 6)
+            control("OFF", 6)
         }
         else if( (string == "matikan lampu 6") or
             (string == "matikan lampu enam")){
-            control("OFF", 6)
+            control("ON", 6)
         }
         if( (string == "nyalakan lampu 7") or
             (string == "nyalakan lampu tujuh")){
-            control("ON", 7)
+            control("OFF", 7)
         }
         else if( (string == "matikan lampu 7") or
             (string == "matikan lampu tujuh")){
-            control("OFF", 7)
+            control("ON", 7)
         }
         if( (string == "nyalakan lampu 8") or
             (string == "nyalakan lampu delapan")){
-            control("ON", 8)
+            control("OFF", 8)
         }
         else if( (string == "matikan lampu 8") or
             (string == "matikan lampu delapan")){
-            control("OFF", 8)
+            control("ON", 8)
         }
         if(string == "nyalakan semua lampu"){
-            control("ON", 0)
+            control("OFF", 0)
         }
         else if(string == "matikan semua lampu"){
-            control("OFF", 0)
+            control("ON", 0)
         }
     }
 
