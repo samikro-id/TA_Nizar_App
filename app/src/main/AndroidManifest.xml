@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ta_nizar_app">
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
-    <uses-feature android:name="android.hardware.bluetooth" android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -19,8 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/SetTheme"
         tools:targetApi="31">
-        <activity android:name=".BluetoothActivity"/>
-        <activity android:name=".HomeActivity"/>
+        <activity
+            android:name=".TimerActivity"
+            android:exported="false" />
+        <activity android:name=".BluetoothActivity" />
+        <activity android:name=".HomeActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

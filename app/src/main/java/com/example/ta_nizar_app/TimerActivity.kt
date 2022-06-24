@@ -11,31 +11,26 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.speech.RecognizerIntent
+import android.os.*
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ta_nizar_app.bluetooth.BluetoothListener
-import com.example.ta_nizar_app.bluetooth.BluetoothModel
 import com.example.ta_nizar_app.home.HomeAdapter
 import com.example.ta_nizar_app.home.HomeListener
 import com.example.ta_nizar_app.home.HomeModel
+import com.example.ta_nizar_app.timer.TimerAdapter
+import com.example.ta_nizar_app.timer.TimerListener
+import com.example.ta_nizar_app.timer.TimerModel
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
-import kotlin.system.exitProcess
 
-class HomeActivity : AppCompatActivity() {
+class TimerActivity : AppCompatActivity() {
     val myUUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 
     private var btSocket: BluetoothSocket? = null
@@ -49,54 +44,88 @@ class HomeActivity : AppCompatActivity() {
     private val REQUEST_ENABLE_BT = 1
     private var address: String = ""
 
-    private lateinit var rvButton: RecyclerView
-    private var mData = arrayListOf<HomeModel>()
-    private lateinit var mAdapter: HomeAdapter
+    private lateinit var rvTimer: RecyclerView
+    private var mData = arrayListOf<TimerModel>()
+    private lateinit var mAdapter: TimerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.acitivity_home)
-        rvButton = findViewById(R.id.rvButton)
+        setContentView(R.layout.activity_timer)
+        rvTimer = findViewById(R.id.rvTimer)
 
         address = intent.getStringExtra("bt_address").toString()
         Log.d(javaClass.simpleName, "msg: ${address}")
-
+        
         checkBluetooth()
 
         InitializeSocket(btDevice!!)
 
         mData.clear()
-        val index = arrayListOf<Int>(0,1,2,3,4,5,6,7,8)
+        val index = arrayListOf<Int>(1,2,3,4,5,6,7,8)
         index?.forEach { i ->
-            val item = HomeModel()
-            if(i == 0){
-                item.name = "Semua"
-            }
-            else{
-                item.name = "Lampu ${i}"
-            }
+            val item = TimerModel()
 
-            item.id = "${i}"
+            item.name = "L${i}"
             item.state = "OFF"
+            item.run = false
+            item.counter = 0
 
             mData.add(item)
         }
 
-        mAdapter = HomeAdapter(this, mData, object : HomeListener {
-                override fun onItemClick(position: Int) {
+        mAdapter = TimerAdapter(this, mData, object : TimerListener {
+            override fun onItemClick(position: Int, timerSecond: Int) {
 //                TODO("Not yet implemented")
+                val timer = mData[position]
+                Log.d(javaClass.simpleName, "Tm ${timer.name} ${position} ${timerSecond}")
 
-                    val device = mData[position]
-                    Log.d(javaClass.simpleName, "Bt ${device.name} ${position}")
+                if(timerSecond > 0 && timer.run == false) {
+                    mData[position].run = true
+                    mData[position].counter = timerSecond
 
-                    control(device.state.toString(), position)
+                    mAdapter.notifyDataSetChanged()
+
+                    object : CountDownTimer(timerSecond.toLong() * 1000, 1000) {
+                        override fun onTick(millisUntilFinished: Long) {
+                            val remain = millisUntilFinished / 1000
+                            Log.d(javaClass.simpleName,"Count ${timer.name} ${remain}")
+
+                            mData[position].counter = remain.toInt()
+                            mAdapter.notifyDataSetChanged()
+                        }
+
+                        override fun onFinish() {
+                            Log.d(javaClass.simpleName, "Timer ${timer.name} Done")
+
+                            mData[position].run = false
+                            mAdapter.notifyDataSetChanged()
+
+                            when(mData[position].state){
+                                "ON" -> control("OFF", position + 1)
+                                else -> control("ON", position + 1)
+                            }
+                        }
+                    }.start()
                 }
-            })
+            }
+
+            override fun onSwClick(position: Int, on: Boolean) {
+//                TODO("Not yet implemented")
+                when(on){
+                    true -> mData[position].state = "ON"
+                    else -> mData[position].state = "OFF"
+                }
+            }
+        })
 
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-        rvButton.layoutManager = layoutManager
-        rvButton.adapter = mAdapter
+        rvTimer.layoutManager = layoutManager
+        rvTimer.adapter = mAdapter
+        mAdapter.notifyDataSetChanged()
+    }
 
+    fun back(){
+        finish()
     }
 
     fun control(command: String, index: Int){
@@ -130,111 +159,6 @@ class HomeActivity : AppCompatActivity() {
         mAdapter.notifyDataSetChanged()
     }
 
-    fun parseSpeech(cmd:String){
-        var string = cmd.lowercase()
-
-        if( (string == "nyalakan lampu 1") or
-            (string == "nyalakan lampu satu")){
-            control("OFF", 1)
-        }
-        else if( (string == "matikan lampu 1") or
-            (string == "matikan lampu satu")){
-            control("ON", 1)
-        }
-        if( (string == "nyalakan lampu 2") or
-            (string == "nyalakan lampu dua")){
-            control("OFF", 2)
-        }
-        else if( (string == "matikan lampu 2") or
-            (string == "matikan lampu dua")){
-            control("ON", 2)
-        }
-        if( (string == "nyalakan lampu 3") or
-            (string == "nyalakan lampu tiga")){
-            control("OFF", 3)
-        }
-        else if( (string == "matikan lampu 3") or
-            (string == "matikan lampu tiga")){
-            control("ON", 3)
-        }
-        if( (string == "nyalakan lampu 4") or
-            (string == "nyalakan lampu empat")){
-            control("OFF", 4)
-        }
-        else if( (string == "matikan lampu 4") or
-            (string == "matikan lampu empat")){
-            control("ON", 4)
-        }
-        if( (string == "nyalakan lampu 5") or
-            (string == "nyalakan lampu lima")){
-            control("OFF", 5)
-        }
-        else if( (string == "matikan lampu 5") or
-            (string == "matikan lampu lima")){
-            control("ON", 5)
-        }
-        if( (string == "nyalakan lampu 6") or
-            (string == "nyalakan lampu enam")){
-            control("OFF", 6)
-        }
-        else if( (string == "matikan lampu 6") or
-            (string == "matikan lampu enam")){
-            control("ON", 6)
-        }
-        if( (string == "nyalakan lampu 7") or
-            (string == "nyalakan lampu tujuh")){
-            control("OFF", 7)
-        }
-        else if( (string == "matikan lampu 7") or
-            (string == "matikan lampu tujuh")){
-            control("ON", 7)
-        }
-        if( (string == "nyalakan lampu 8") or
-            (string == "nyalakan lampu delapan")){
-            control("OFF", 8)
-        }
-        else if( (string == "matikan lampu 8") or
-            (string == "matikan lampu delapan")){
-            control("ON", 8)
-        }
-        if(string == "nyalakan semua lampu"){
-            control("OFF", 0)
-        }
-        else if(string == "matikan semua lampu"){
-            control("ON", 0)
-        }
-    }
-
-    fun getSpeechInput(view: View){
-        val mSpeechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-        mSpeechIntent.putExtra(
-            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        )
-        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, packageName)
-        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true)
-        mSpeechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "id-ID")
-        mSpeechIntent.putExtra(
-            RecognizerIntent.EXTRA_PROMPT,
-            "Silahkan ucapkan perintah Anda..."
-        )
-        startActivityForResult(mSpeechIntent, 10)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when(requestCode){
-            10 -> if(resultCode == RESULT_OK && data != null){
-                    val spokenText: String? =  data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).let { text -> text?.get(0) }
-                    Toast.makeText(this, "you said ${spokenText}", Toast.LENGTH_SHORT).show()
-
-                    parseSpeech(spokenText!!);
-                }
-        }
-
-    }
     fun InitializeSocket(device: BluetoothDevice){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val resultBluetoothPermission = checkBluetoothPermission(Manifest.permission.BLUETOOTH_CONNECT)
@@ -282,16 +206,6 @@ class HomeActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Error !!!", Toast.LENGTH_SHORT).show()
                 appExit()
             }
-        }
-    }
-
-    fun openTimer(view: View){
-        runOnUiThread{
-            Handler(Looper.getMainLooper()).postDelayed({
-                val intent = Intent(this, TimerActivity::class.java)
-                intent.putExtra("bt_address", address)
-                startActivity(intent)
-            }, 1000)
         }
     }
 

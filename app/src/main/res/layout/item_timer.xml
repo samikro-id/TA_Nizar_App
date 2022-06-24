@@ -1,44 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/circle_white"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_margin="10dp">
 
     <TextView
-        android:id="@+id/tvBtName"
+        android:id="@+id/tvTmName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="L1"
         android:textSize="24dp"
         android:gravity="center_vertical|center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvBtState"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/swOnOff"
+        app:layout_constraintLeft_toLeftOf="@id/swOnOff"
+        app:layout_constraintRight_toRightOf="@id/swOnOff"
+        />
 
-    <TextView
-        android:id="@+id/tvBtState"
+    <Switch
+        android:id="@+id/swOnOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="State"
-        android:textSize="14dp"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toBottomOf="@id/tvBtName"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:showText="true"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvTmName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toLeftOf="@id/npTimerThousand"
+        />
 
-    <NumberPicker
-        android:id="@+id/npStartMinute"
+    <TextView
+        android:id="@+id/tvTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="50dp"
-        android:descendantFocusability="blocksDescendants"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="Timer in Second"
+        android:textSize="14dp"
+        android:gravity="center_vertical|center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/npTimerThousand"
+        app:layout_constraintLeft_toLeftOf="@id/npTimerThousand"
+        app:layout_constraintRight_toRightOf="@id/npTimer"
+        />
+
+    <NumberPicker
+        android:id="@+id/npTimerThousand"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintLeft_toRightOf="@id/swOnOff"
+        app:layout_constraintRight_toLeftOf="@id/npTimerHundred"
+        app:layout_constraintTop_toBottomOf="@id/tvTimer"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <NumberPicker
+        android:id="@+id/npTimerHundred"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintLeft_toRightOf="@id/npTimerThousand"
+        app:layout_constraintRight_toLeftOf="@id/npTimerTen"
+        app:layout_constraintTop_toBottomOf="@id/tvTimer"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <NumberPicker
+        android:id="@+id/npTimerTen"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintLeft_toRightOf="@id/npTimerHundred"
+        app:layout_constraintRight_toLeftOf="@id/npTimer"
+        app:layout_constraintTop_toBottomOf="@id/tvTimer"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <NumberPicker
+        android:id="@+id/npTimer"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintLeft_toRightOf="@id/npTimerTen"
+        app:layout_constraintRight_toRightOf="@id/btStart"
+        app:layout_constraintTop_toBottomOf="@id/tvTimer"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/btStart"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="START"
+        android:textSize="14dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/npTimer"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

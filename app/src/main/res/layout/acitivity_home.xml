@@ -53,6 +53,17 @@
                 app:layout_constraintLeft_toRightOf="@id/civProfile"
                 app:layout_constraintBottom_toBottomOf="@id/civProfile"/>
 
+            <ImageView
+                android:id="@+id/ivSchedule"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_baseline_schedule_24"
+                android:onClick="openTimer"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/tvJudul"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
