@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/circle_white"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="150dp"
     android:layout_margin="10dp">
 
     <TextView
@@ -49,8 +49,8 @@
 
     <NumberPicker
         android:id="@+id/npTimerThousand"
-        android:layout_width="30dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
         android:descendantFocusability="blocksDescendants"
         app:layout_constraintLeft_toRightOf="@id/swOnOff"
         app:layout_constraintRight_toLeftOf="@id/npTimerHundred"
@@ -59,8 +59,8 @@
 
     <NumberPicker
         android:id="@+id/npTimerHundred"
-        android:layout_width="30dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
         android:descendantFocusability="blocksDescendants"
         app:layout_constraintLeft_toRightOf="@id/npTimerThousand"
         app:layout_constraintRight_toLeftOf="@id/npTimerTen"
@@ -69,8 +69,8 @@
 
     <NumberPicker
         android:id="@+id/npTimerTen"
-        android:layout_width="30dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
         android:descendantFocusability="blocksDescendants"
         app:layout_constraintLeft_toRightOf="@id/npTimerHundred"
         app:layout_constraintRight_toLeftOf="@id/npTimer"
@@ -79,8 +79,8 @@
 
     <NumberPicker
         android:id="@+id/npTimer"
-        android:layout_width="30dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
         android:descendantFocusability="blocksDescendants"
         app:layout_constraintLeft_toRightOf="@id/npTimerTen"
         app:layout_constraintRight_toRightOf="@id/btStart"

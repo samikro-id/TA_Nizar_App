@@ -74,18 +74,16 @@ class TimerActivity : AppCompatActivity() {
         }
 
         mAdapter = TimerAdapter(this, mData, object : TimerListener {
-            override fun onItemClick(position: Int, timerSecond: Int) {
+            override fun onItemClick(position: Int) {
 //                TODO("Not yet implemented")
                 val timer = mData[position]
-                Log.d(javaClass.simpleName, "Tm ${timer.name} ${position} ${timerSecond}")
+                Log.d(javaClass.simpleName, "Tm ${timer.name} ${position} ${timer.counter}")
 
-                if(timerSecond > 0 && timer.run == false) {
+                if(timer.counter > 0 && timer.run == false) {
                     mData[position].run = true
-                    mData[position].counter = timerSecond
-
                     mAdapter.notifyDataSetChanged()
 
-                    object : CountDownTimer(timerSecond.toLong() * 1000, 1000) {
+                    object : CountDownTimer(timer.counter.toLong() * 1000, 1000) {
                         override fun onTick(millisUntilFinished: Long) {
                             val remain = millisUntilFinished / 1000
                             Log.d(javaClass.simpleName,"Count ${timer.name} ${remain}")
@@ -100,9 +98,11 @@ class TimerActivity : AppCompatActivity() {
                             mData[position].run = false
                             mAdapter.notifyDataSetChanged()
 
+                            val true_position = position
+
                             when(mData[position].state){
-                                "ON" -> control("OFF", position + 1)
-                                else -> control("ON", position + 1)
+                                "ON" -> control("OFF", true_position + 1)
+                                else -> control("ON", true_position + 1)
                             }
                         }
                     }.start()
@@ -115,6 +115,13 @@ class TimerActivity : AppCompatActivity() {
                     true -> mData[position].state = "ON"
                     else -> mData[position].state = "OFF"
                 }
+//                mAdapter.notifyDataSetChanged()
+            }
+
+            override fun onNpChanged(position: Int, newVal: Int) {
+//                TODO("Not yet implemented")
+                mData[position].counter = newVal
+//                mAdapter.notifyDataSetChanged()
             }
         })
 
@@ -125,32 +132,16 @@ class TimerActivity : AppCompatActivity() {
     }
 
     fun back(){
-        finish()
+        appExit()
     }
 
     fun control(command: String, index: Int){
         var cmd : String
         if(command == "OFF"){
             cmd = "${index}1\r\n"
-
-            if(index == 0){
-                mData.forEach { data ->
-                    data.state = "ON"
-                }
-            }else{
-                mData[index].state = "ON"
-            }
         }
         else{
             cmd = "${index}0\r\n"
-
-            if(index == 0){
-                mData.forEach { data ->
-                    data.state = "OFF"
-                }
-            }else{
-                mData[index].state = "OFF"
-            }
         }
 
         Log.d(javaClass.simpleName, cmd)
@@ -319,7 +310,7 @@ class TimerActivity : AppCompatActivity() {
         }
         else{
             Toast.makeText(this, "Deny Enable BT", Toast.LENGTH_SHORT).show()
-            appExit();
+            appExit()
         }
     }
 
@@ -373,6 +364,7 @@ class TimerActivity : AppCompatActivity() {
 
     fun appExit(){
         Handler(Looper.getMainLooper()).postDelayed({
+            btSocket?.close()
             finish()
         }, 2500)
     }

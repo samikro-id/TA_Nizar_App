@@ -1,12 +1,15 @@
 package com.example.ta_nizar_app.timer
 
-import android.os.CountDownTimer
+import android.R.attr.order
 import android.util.Log
 import android.view.View
 import android.widget.*
+import android.widget.NumberPicker.OnValueChangeListener
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ta_nizar_app.R
-import android.widget.Toast.makeText as makeText1
+import java.lang.String
+import kotlin.Int
+
 
 class TimerHolder (itemView: View): RecyclerView.ViewHolder(itemView)  {
     private val itemTmName = itemView.findViewById(R.id.tvTmName) as TextView
@@ -21,8 +24,8 @@ class TimerHolder (itemView: View): RecyclerView.ViewHolder(itemView)  {
         itemTmName.text = itemTime.name
 
         when(itemTime.state){
-            "OFF" -> itemStartStop.text = "START"
-            else -> itemStartStop.text = "STOP"
+            "OFF" -> itemSwOnOff.isChecked = false
+            else -> itemSwOnOff.isChecked = true
         }
 
         when(itemTime!!.run){
@@ -65,15 +68,39 @@ class TimerHolder (itemView: View): RecyclerView.ViewHolder(itemView)  {
         itemNpTimerThousand.maxValue = 9
 
         itemStartStop.setOnClickListener{
-            var tmSecond : Int = 0
-
-            tmSecond = (itemNpTimerThousand.value * 1000) + (itemNpTimerHundred.value * 100) + (itemNpTimerTen.value * 10) + itemNpTimer.value
-
-            listener.onItemClick(position, tmSecond)
+            listener.onItemClick(position)
         }
 
         itemSwOnOff.setOnClickListener {
             listener.onSwClick(position, itemSwOnOff.isChecked)
         }
+
+        itemNpTimerThousand.setOnValueChangedListener(OnValueChangeListener { picker, oldVal, newVal ->
+            var tmSecond : Int = 0
+            tmSecond = (itemNpTimerThousand.value * 1000) + (itemNpTimerHundred.value * 100) + (itemNpTimerTen.value * 10) + itemNpTimer.value
+
+            listener.onNpChanged(position, tmSecond)
+        })
+
+        itemNpTimerHundred.setOnValueChangedListener(OnValueChangeListener { picker, oldVal, newVal ->
+            var tmSecond : Int = 0
+            tmSecond = (itemNpTimerThousand.value * 1000) + (itemNpTimerHundred.value * 100) + (itemNpTimerTen.value * 10) + itemNpTimer.value
+
+            listener.onNpChanged(position, tmSecond)
+        })
+
+        itemNpTimerTen.setOnValueChangedListener(OnValueChangeListener { picker, oldVal, newVal ->
+            var tmSecond : Int = 0
+            tmSecond = (itemNpTimerThousand.value * 1000) + (itemNpTimerHundred.value * 100) + (itemNpTimerTen.value * 10) + itemNpTimer.value
+
+            listener.onNpChanged(position, tmSecond)
+        })
+
+        itemNpTimer.setOnValueChangedListener(OnValueChangeListener { picker, oldVal, newVal ->
+            var tmSecond : Int = 0
+            tmSecond = (itemNpTimerThousand.value * 1000) + (itemNpTimerHundred.value * 100) + (itemNpTimerTen.value * 10) + itemNpTimer.value
+
+            listener.onNpChanged(position, tmSecond)
+        })
     }
 }

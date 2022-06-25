@@ -286,6 +286,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun openTimer(view: View){
+        btSocket?.close()
         runOnUiThread{
             Handler(Looper.getMainLooper()).postDelayed({
                 val intent = Intent(this, TimerActivity::class.java)
